@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" class="center">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Justin Bieber Fan Page</title>
+  <style>
+    /* Reset and base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      max-width: 1500px;
+    }
+
+    .center {
+      margin: 0 auto;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #fff;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      overflow-x: hidden; /* Prevents horizontal scroll */
+    }
+
+    a {
+      color: #4caf50;
+      text-decoration: none;
+    }
+
+    /* Floating Nav - mobile and larger screens */
+    .nav-bar {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2f2f2f;
+      padding: 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 9999;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-bar:hover {
+      background-color: #444;
+    }
+
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background: #2f2f2f;
+      height: 100vh;
+      width: 250px;
+      padding-top: 100px;
+      box-shadow: -3px 0 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      z-index: 9999;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 15px 20px;
+      font-size: 1.2rem;
+      color: #fff;
+      text-transform: uppercase;
+      border-bottom: 1px solid #444;
+    }
+
+    .nav-links a:hover {
+      background: #444;
+    }
+
+    .nav-links .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .nav-bar.active + .nav-links {
+      display: block;
+    }
+
+    /* Full horizontal nav for larger screens */
+    .full-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      /* width: 100%; */
+      background-color: #121212;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      margin: 0 auto;
+      z-index: 10000;
+    }
+
+    .full-nav a {
+      font-size: 1.2rem;
+      color: #fff;
+      padding: 10px 20px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .full-nav a:hover {
+      background-color: #444;
+    }
+
+    /* Layout */
+    header {
+      background: url('images/justin1_720.jpg') no-repeat center center/cover;
+      color: #fff;
+      padding: 4rem 1rem 2rem;
+      text-align: center;
+      animation: fadeInDown 1s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      transition: background 1s ease-in-out;
+    }
+
+    /* Dim the background */
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      z-index: 1;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      z-index: 1;
+    }
+
+    /* Section Layout */
+    section {
+      width: 100%;
+      min-height: 1000px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 2rem 10%;
+      background-color: #2c2c2c;
+      text-align: center;
+    }
+
+    section:nth-child(even) {
+      background-color: #3a3a3a;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #4caf50;
+      margin-top: 0;
+    }
+
+    .bio, .fun-facts, .concerts, .music-videos {
+      text-align: center;
+    }
+
+    .bio p{
+        text-align: justify;
+        padding: 10px 0px;
+    }
+
+    /* Music Videos Section */
+    .music-videos {
+      background: #333;
+      /* padding: 2rem; */
+      text-align: center;
+      position: relative;
+    }
+
+    .video-slide {
+      display: none; /* Hide all videos by default */
+    }
+
+    .video-slide.active {
+      display: block; /* Show the active video */
+    }
+
+    /* Dots for navigation */
+    .dots-container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #4caf50;
+    }
+
+    /* Larger video sizes */
+    .video-container iframe {
+      /* width: 1150px;  */
+      width: 80vw; 
+      max-width: 1200px; /* Set a max-width to prevent videos from being too large */
+      /* height: 580px;  */
+      height: 75vh; 
+      margin: 0 auto;
+      display: block;
+    }
+
+    /* Fun Facts Hover Animation */
+    .fun-facts li {
+      background: #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 5px solid #4caf50;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .fun-facts li:hover {
+      transform: scale(1.05);
+    }
+
+    .fun-facts ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .concerts table {
+      width: 100%;
+      margin-top: 2rem;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    .concerts th, .concerts td {
+      padding: 1rem;
+      border: 1px solid #444;
+    }
+
+    .concerts th {
+      background-color: #4caf50;
+    }
+
+    .concerts td {
+      background-color: #333;
+    }
+
+    footer {
+      background: #121212;
+      color: #fff;
+      text-align: center;
+      /* padding: 2rem 1rem; */
+      margin: 4rem 0;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hide the corner navigation button on larger screens */
+    @media (min-width: 601px) {
+      .nav-bar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+    .full-nav {
+        display: none;
+      }
+
+      .nav-bar {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Navigation -->
+  <div class="nav-bar" onclick="toggleNav()">☰</div>
+  <div class="nav-links">
+    <span class="close-btn" onclick="closeNav()">✖</span>
+    <a href="#home">Home</a>
+    <a href="#bio">Biography</a>
+    <a href="#videos">Music Videos</a>
+    <a href="#fun-facts">Fun Facts</a>
+    <a href="#concerts">Upcoming Concerts</a>
+  </div>
+
+  <!-- Full Navigation Bar (desktop) -->
+  <div class="full-nav">
+    <a href="#home">Home</a>
+    <a href="#bio">Biography</a>
+    <a href="#videos">Music Videos</a>
+    <a href="#fun-facts">Fun Facts</a>
+    <a href="#concerts">Upcoming Concerts</a>
+  </div>
+
+  <!-- Main Content -->
+  <header id="home">
+    <h1>Justin Bieber Fan Page</h1>
+    <p>Discover everything about Justin Bieber, from his biography to his popular music videos.</p>
+  </header>
+
+  <!-- Bio Section -->
+  <section id="bio" class="bio">
+    <h2>Biography</h2>
+    <p>Justin Bieber (born March 1, 1994, in London, Ontario, Canada) is a Grammy Award-winning singer, songwriter, and global pop icon who rose to fame in his early teens. Discovered on YouTube by talent manager Scooter Braun, Bieber was signed to RBMG Records in 2008, with Usher as a mentor. His debut EP, My World (2009), and full-length album My World 2.0 (2010) were commercial successes, featuring the chart-topping hit "Baby," which catapulted him into international stardom.</p>
+    <p>Bieber quickly became a defining figure of 2010s pop culture, celebrated for his boyish charm and vocal talent. As his fanbase, dubbed “Beliebers,” grew to millions worldwide, Bieber released a series of successful albums including Believe (2012) and Purpose (2015), the latter marking a turning point in his artistic maturity. Tracks like "What Do You Mean?", "Sorry," and "Love Yourself" showcased a shift toward a more polished, R&B-influenced sound and earned him critical acclaim.</p>
+    <p>In the years that followed, Bieber continued to evolve as an artist. Collaborations with artists like DJ Khaled, Ed Sheeran, and The Kid LAROI demonstrated his versatility across genres including EDM, hip-hop, and trap. His 2021 album Justice, featuring hits like “Peaches” and “Hold On,” further solidified his position in modern pop and earned Grammy nominations.</p>
+    <p>Beyond music, Bieber has remained a constant presence in the media due to his high-profile relationships, notably his marriage to model Hailey Baldwin (Hailey Bieber) in 2018. He's also faced personal and public struggles, including battles with mental health, substance use, and Lyme disease — experiences he has openly addressed to encourage vulnerability and self-care among fans.</p>
+    <p>In addition to his musical achievements, Bieber is known for his philanthropy. Over the years, he has supported numerous causes, including education initiatives, access to clean water, and organizations like Pencils of Promise and Make-A-Wish Foundation. His fashion ventures and collaborations with brands like Calvin Klein and his streetwear label, Drew House, have also established him as a tastemaker in youth culture.</p>
+    <p>From teen heartthrob to seasoned artist, Justin Bieber's career reflects both the pressures and potential of growing up in the spotlight. Through reinvention and resilience, he has remained one of the most influential and enduring figures in contemporary music.</p>
+  </section>
+
+  <!-- Music Videos Section -->
+  <section id="videos" class="music-videos"> 
+    <h2>Music Videos</h2> 
+    <div class="video-container">
+      <div class="video-slide active">
+        <iframe src="https://www.youtube.com/embed/fRh_vgS2dFE" frameborder="0" title="Sorry" allowfullscreen></iframe>
+      </div>
+      <div class="video-slide">
+        <iframe src="https://www.youtube.com/embed/kffacxfA7G4" frameborder="0" title="Baby ft. Ludacris" allowfullscreen></iframe>
+      </div>
+      <div class="video-slide">
+        <iframe src="https://www.youtube.com/embed/DK_0jXPuIr0" frameborder="0" title="What Do You Mean?" allowfullscreen></iframe>
+      </div>
+      <div class="video-slide">
+        <iframe src="https://www.youtube.com/embed/oyEuk8j8imI" frameborder="0" title="Love Yourself" allowfullscreen></iframe>
+      </div>
+      <div class="video-slide">
+        <iframe src="https://www.youtube.com/embed/_Z5-P9v3F8w" frameborder="0" title="Peaches ft. Daniel Caesar, Giveon" allowfullscreen></iframe>
+      </div>
+      <div class="video-slide">
+        <iframe src="https://www.youtube.com/embed/Ys7-6_t7OEQ" frameborder="0" title="Intentions ft. Quavo" allowfullscreen></iframe>
+      </div>
+    </div>
+    <!-- Dots Navigation -->
+    <div class="dots-container">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+      <div class="dot" onclick="goToSlide(4)"></div>
+      <div class="dot" onclick="goToSlide(5)"></div>
+    </div>
+  </section>
+
+  <!-- Fun Facts Section --> 
+  <section id="fun-facts" class="fun-facts"> 
+    <h2>Fun Facts</h2> 
+    <ul> 
+      <li>He was discovered by Scooter Braun after posting YouTube covers.</li> 
+      <li>Justin’s favorite color is purple.</li>
+      <li>He taught himself to play drums, guitar, piano, and trumpet.</li> 
+      <li>Justin is fluent in both English and French.</li>
+      <li>He holds multiple Guinness World Records, including youngest solo artist to have five No. 1 albums in the US.</li> 
+      <li>His middle name is Drew.</li>
+      <li>Justin has over 100 million followers on Instagram!</li>
+      <li>Justin enjoys skateboarding and snowboarding in his free time.</li>
+    </ul> 
+  </section>
+
+  <!-- Upcoming Concerts Section -->
+  <section id="concerts" class="concerts">
+    <h2>Upcoming Concerts</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Venue</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Los Angeles</td>
+          <td>Staples Center</td>
+          <td>March 10, 2026</td>
+        </tr>
+        <tr>
+          <td>New York</td>
+          <td>Madison Square Garden</td>
+          <td>April 5, 2026</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Justin Bieber Fan Page. All rights reserved.</p>
+  </footer>
+
+  <!-- Script for Navigation and Other Features -->
+  <script>
+    const header = document.querySelector('header');
+    const images = [
+      'images/justin1_720.jpg',
+      'images/justin2_720.png',
+      'images/justin3_720.jpg',
+      'images/justin4_720.jpg',
+      'images/justin5_720.jpg',
+      'images/justin6_720.jpg'
+    ];
+
+    let currentImageIndex = 0;
+
+    function changeBackground() {
+      header.style.backgroundImage = `url(${images[currentImageIndex]})`;
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+    }
+
+    setInterval(changeBackground, 5000); // Change every 5 seconds
+
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.video-slide');
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) {
+          slide.classList.add('active');
+        }
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        if (i === index) {
+          dot.classList.add('active');
+        }
+      });
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      showSlide(currentIndex);
+    }
+
+    // Auto Slide Change
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      showSlide(currentIndex);
+    }, 5000); // Change every 5 seconds
+
+    // Function to open and close the navigation menu
+    function toggleNav() {
+      document.querySelector('.nav-bar').classList.toggle('active');
+      document.querySelector('.nav-links').classList.toggle('active');
+    }
+
+    function closeNav() {
+      document.querySelector('.nav-bar').classList.remove('active');
+      document.querySelector('.nav-links').classList.remove('active');
+    }
+  </script>
+
+</body>
+</html>
