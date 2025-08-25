@@ -42,9 +42,9 @@
     .nav-bar {
       position: fixed;
       top: 20px;
-      right: 20px;
-      background: #2f2f2f;
-      padding: 15px;
+      left: 20px;
+      background-color: #121212;
+      padding: 11px 15px;
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -60,13 +60,14 @@
       display: none;
       position: fixed;
       top: 0;
-      right: 0;
+      left: 0;
       background: #2f2f2f;
       height: 100vh;
       width: 250px;
       padding-top: 100px;
-      box-shadow: -3px 0 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 3px 0 15px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s ease;
+      transform: translateX(-100%);
       z-index: 9999;
     }
 
@@ -83,10 +84,16 @@
       background: #444;
     }
 
+    .nav-links.active {
+      display: block;
+      transform: translateX(0);
+      transition: transform 0.3s ease;
+    }
+
     .nav-links .close-btn {
       position: absolute;
       top: 20px;
-      right: 20px;
+      left: 20px;
       font-size: 2rem;
       color: #fff;
       cursor: pointer;
@@ -291,6 +298,26 @@
       background-color: #333;
     }
 
+    #backToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      right: 25px;
+      z-index: 999;
+      font-size: 24px;
+      padding: 6px 15px 7px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    #backToTopBtn:hover {
+      background-color: #45a049;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
     footer {
       background: #121212;
       color: #fff;
@@ -370,22 +397,22 @@
     <h2>Music Videos</h2> 
     <div class="video-container">
       <div class="video-slide active">
-        <iframe src="https://www.youtube.com/embed/fRh_vgS2dFE" frameborder="0" title="Sorry" allowfullscreen></iframe>
+        <iframe id="player0" src="https://www.youtube.com/embed/fRh_vgS2dFE" frameborder="0" title="Sorry" allowfullscreen></iframe>
       </div>
       <div class="video-slide">
-        <iframe src="https://www.youtube.com/embed/kffacxfA7G4" frameborder="0" title="Baby ft. Ludacris" allowfullscreen></iframe>
+        <iframe id="player1" src="https://www.youtube.com/embed/kffacxfA7G4" frameborder="0" title="Baby ft. Ludacris" allowfullscreen></iframe>
       </div>
       <div class="video-slide">
-        <iframe src="https://www.youtube.com/embed/DK_0jXPuIr0" frameborder="0" title="What Do You Mean?" allowfullscreen></iframe>
+        <iframe id="player2" src="https://www.youtube.com/embed/DK_0jXPuIr0" frameborder="0" title="What Do You Mean?" allowfullscreen></iframe>
       </div>
       <div class="video-slide">
-        <iframe src="https://www.youtube.com/embed/oyEuk8j8imI" frameborder="0" title="Love Yourself" allowfullscreen></iframe>
+        <iframe id="player3" src="https://www.youtube.com/embed/oyEuk8j8imI" frameborder="0" title="Love Yourself" allowfullscreen></iframe>
       </div>
       <div class="video-slide">
-        <iframe src="https://www.youtube.com/embed/_Z5-P9v3F8w" frameborder="0" title="Peaches ft. Daniel Caesar, Giveon" allowfullscreen></iframe>
+        <iframe id="player4" src="https://www.youtube.com/embed/_Z5-P9v3F8w" frameborder="0" title="Peaches ft. Daniel Caesar, Giveon" allowfullscreen></iframe>
       </div>
       <div class="video-slide">
-        <iframe src="https://www.youtube.com/embed/Ys7-6_t7OEQ" frameborder="0" title="Intentions ft. Quavo" allowfullscreen></iframe>
+        <iframe id="player5" src="https://www.youtube.com/embed/Ys7-6_t7OEQ" frameborder="0" title="Intentions ft. Quavo" allowfullscreen></iframe>
       </div>
     </div>
     <!-- Dots Navigation -->
@@ -445,6 +472,8 @@
     <p>&copy; 2025 Justin Bieber Fan Page. All rights reserved.</p>
   </footer>
 
+  <button onclick="scrollToTop()" id="backToTopBtn" title="Go to top">⬆</button>
+  
   <!-- Script for Navigation and Other Features -->
   <script>
     const header = document.querySelector('header');
@@ -507,6 +536,18 @@
       document.querySelector('.nav-bar').classList.remove('active');
       document.querySelector('.nav-links').classList.remove('active');
     }
+
+    window.onscroll = function () {
+      const btn = document.getElementById("backToTopBtn");
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    };
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
   </script>
 
 </body>
