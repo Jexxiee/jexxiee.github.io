@@ -239,6 +239,8 @@
       z-index: 99999; /* High z-index to overlay everything */
       top: 0;
       left: 0;
+      max-width: none;
+      max-height: none;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.6); /* Dim background */
@@ -249,11 +251,17 @@
     }
 
     .modal-content {
-      display: block;
+      position: absolute;  /* Use absolute positioning to center */
+      top: 50%;  /* Position vertically in the middle */
+      left: 50%; /* Position horizontally in the middle */
+      transform: translate(-50%, -50%); /* Adjust for true centering */
+      display: flex;
       margin: auto;
       width: 80%;
-      max-width: 960px;
-      height: 70vh;
+      height: 80%;
+      max-width: none;
+      max-height: none;
+      align-items: center;
     }
 
     .modal-close {
@@ -348,12 +356,21 @@
       background-color: #333;
     }
 
-    #backToTopBtn {
-      display: none;
+    /* Style the container to ensure the button stays within max-width */
+    .scroll-container {
       position: fixed;
       bottom: 40px;
       right: 25px;
-      z-index: 999;
+      max-width: 1500px;  /* This keeps it within the max-width of the page */
+      margin: 0 auto;  /* Centers the button in the middle of the max-width */
+      pointer-events: none; /* Prevents interfering with the main content */
+      z-index: 1000;
+    }
+
+    #backToTopBtn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
       font-size: 24px;
       padding: 6px 15px 7px;
       background-color: #4caf50;
@@ -362,7 +379,11 @@
       border-radius: 50%;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: bottom 0.3s ease-in-out;
+      pointer-events: auto;
+      z-index: 1000; /* Ensure it stays above other elements */
     }
+
     #backToTopBtn:hover {
       background-color: #45a049;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -413,6 +434,12 @@
         top: 15px;
         right: 25px;
         font-size: 30px;
+      }
+    }
+
+    @media (min-width: 1501px) {
+      .scroll-container {
+        right: calc(50% - 750px + 50px); /* Center the button within the screen */
       }
     }
   </style>
@@ -542,7 +569,9 @@
     <p>&copy; 2025 Justin Bieber Fan Page. All rights reserved.</p>
   </footer>
 
-  <button onclick="scrollToTop()" id="backToTopBtn" title="Go to top">⬆</button>
+  <div class="scroll-container">
+    <button onclick="scrollToTop()" id="backToTopBtn" title="Go to top">⬆</button>
+  </div>
   
   <!-- Script for Navigation and Other Features -->
   <script>
